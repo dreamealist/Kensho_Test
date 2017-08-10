@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<h1>Jiyeon Kang D3 Practice</h1>
+<p>Thank you Luis for giving me the opportunity!</p>
+<style>
+body { font: 12px Arial;}
+
+.line {
+  fill: none;
+  stroke: #EF5285;
+  stroke-width: 2px;
+}
+
+  </style>
+  <body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<script>
+
+import * as or from "orama"
+
+// example data
+var data = [
+    {date: "2010/01/02", value: 32},
+    {date: "2010/02/10", value: 102},
+    {date: "2010/04/22", value: 42},
+    {date: "2011/01/12", value: 70},
+    {date: "2011/01/09", value: 10},
+    {date: "2012/01/06", value: 2},
+    {date: "2015/01/04", value: 45},
+    {date: "2016/02/02", value: 67},
+    {date: "2016/03/05", value: 19},
+    {date: "2016/09/12", value: 89}
+];
+
+// Group the data by year, so that it can be used on the d3 line chart
+var groupedData = {
+  2010 { x: width / 5, y: height / 2},
+  2011 { x: width / 4, y: height / 2},
+  2012 { x: width / 3, y: height / 2},
+  2015 { x: width / 2, y: height / 2},
+  2016 { x: 2 * width / 5, y: height /2}
+}
+
+var dataByYear = d3.nest()
+  .key(function(d) { return d.date.split("/")[2]; })
+  .rollup(function(v) { return d3.sum(v, function(d) { return d.amount; }); })
+  .object(data);
+console.log(JSON.stringify(dataByYear));
+
+
+/*var MyChart = () =>
+<or. Chart>
+<or. Lines
+    data={data}
+    x="date" y="value"
+    />
+    </or.Chart>*/
+
+
+// define the z and y scale, and the line function
+var width = 500,
+    height = 300,
+    x = "date"
+    y = "value"
+    line = d3.svg.line()
+
+    var xAxis = d3.svg.axis().scale(x)
+        .orient("bottom").ticks(5);
+
+    var yAxis = d3.svg.axis().scale(y)
+        .orient("left").ticks(5);
+
+
+d3.select("svg")
+    .append("path")
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("d", line(groupedData))
+
+
+svg.selectAll(".line")
+    .data(nest)
+    .enter()
+    .append("path")
+      .attr("class", "line")
+      .attr("d", function(d){
+        return valueLine(d.value)});
+
+})
+
+    </script>
+    </body>
+    </html>
